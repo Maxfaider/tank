@@ -19,6 +19,7 @@ namespace Tank
 
         private EventsListener(string name)
         {
+            this.events = new Dictionary<string, GenericEventHandler>();
             this.nameListener = name;
             this.dateCreated = DateTime.Now.ToString("f");
         }
