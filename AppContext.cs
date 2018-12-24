@@ -6,23 +6,33 @@ using System.Threading.Tasks;
 
 namespace Tank
 {
-    class AppContext
+    public class AppContext
     {
         private static readonly AppContext appContext = new AppContext();
 
         public Dictionary<string, object> attributes;
-       
-        public static AppContext GetIntance()
-        {
-            return appContext;
-        }
+        public EventsListener eventsListener;
+
+        public static AppContext GetIntance() => appContext;
 
         public AppContext()
-        {}
+        {
+            eventsListener = EventsListener.newEventsListener("Global");
+            attributes = new Dictionary<string, object>();
+        }
 
         public void SetAttribute(string name, object value) => attributes.Add(name, value);
 
         public object GetAttribute(string name) => attributes[name];
+
+        public void AddEvent(string name, GenericEventHandler callback) => eventsListener.RegisterEvents(name, callback);
+
+        public void EmitEvent(string name)
+        {
+            GenericEventHandler callback = eventsListener.GetEvent(name);
+            if( callback != null)
+                Task.Run(() => callback(new GenericEventArgs()));
+        }
 
     }
 }
