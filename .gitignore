@@ -1,0 +1,7 @@
+﻿*.pfx
+*.suo
+*.user
+*.csproj
+
+bin/
+obj/
